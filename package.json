@@ -1,0 +1,29 @@
+{
+  "name": "jsutils",
+  "version": "0.1.0",
+  "description": "javascript utilities",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --watch"
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.10.4",
+    "eslint": "^7.4.0",
+    "jest": "^26.1.0"
+  },
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wangzl1163/jsutils.git"
+  },
+  "keywords": [
+    "javascript",
+    "utility-library"
+  ],
+  "author": "wangzl1163",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wangzl1163/jsutils/issues"
+  },
+  "homepage": "https://github.com/wangzl1163/jsutils#readme"
+}
