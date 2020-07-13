@@ -125,7 +125,7 @@ const DateTools = {
     * @param {Date} date Date对象或日期时间字符串
     * @returns 格式化后的日期或时间字符串
     */
-   dateTimeFormate: function(fmt, date) {
+   dateTimeFormat: function(fmt, date) {
       if (Object.prototype.toString.call(date) !== '[object Date]') {
          date = new Date(date)
       }
@@ -158,7 +158,7 @@ const DateTools = {
     * @param {Date} date Date对象或日期时间字符串
     * @returns 格式化后的全日期时间字符串
     */
-   sampleFormate: function(date, separator = '-') {
+   sampleFormat: function(date, separator = '-') {
       if (Object.prototype.toString.call(date) !== '[object Date]') {
          date = new Date(date)
       }
@@ -169,9 +169,72 @@ const DateTools = {
       const hour = date.getHours()
       const minute = date.getMinutes()
       const second = date.getSeconds()
-      const formateNumber = n => n.toString()[1] ? n : '0' + n
+      const formatNumber = n => n.toString()[1] ? n : '0' + n
    
-      return [year, month, day].map(formateNumber).join(separator) + ' ' + [hour, minute, second].map(formateNumber).join(':')
+      return [year, month, day].map(formatNumber).join(separator) + ' ' + [hour, minute, second].map(formatNumber).join(':')
+   },
+   /**
+    * 获取当前周开始和当前日期时间
+    * @param {string} format 格式，默认：'yyyy-MM-dd'
+    * @returns 返回一个对象，包含开始与结束日期，{start：'', end: ''}
+    */
+   thisWeek: function (format = 'yyyy-MM-dd') {
+      const start = new Date()
+      const end = new Date()
+      const i = end.getDay() ? end.getDay() - 1 : 6
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * i)
+
+      return {
+         start: this.dateTimeFormat(format, start),
+         end: this.dateTimeFormat(format, end)
+      }
+   },
+   /**
+    * 获取当月开始到当前的日期时间
+    *
+    * @param {string} format 格式，默认：'yyyy-MM-dd'
+    * @returns 返回一个对象，包含开始与结束日期，{start：'', end: ''}
+    */
+   thisMonth: function (format = 'yyyy-MM-dd') {
+      const start = new Date()
+      const end = new Date()
+      let i = end.getDate()
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * (i - 1))
+
+      return {
+         start: this.dateTimeFormat(format, start),
+         end: this.dateTimeFormat(format, end)
+      }
+   },
+   /**
+    * 计算两个日期之间的差值
+    * @param {string | Date} date1 日期1
+    * @param {string | Date} date2 日期2
+    * @returns 返回差值对象，包含相差的毫秒数、分钟数、小时数、天数
+    */
+   dateDiff: function(date1, date2){
+      date1 = typeof date1 === 'string' ? date1.includes(':') ? date1 : date1 + ' 00:00:00' : date1
+      date2 = typeof date2 === 'string' ? date2.includes(':') ? date2 : date2 + ' 00:00:00' : date2
+
+      const time1 = Date.parse(new Date(date1))
+      const time2 = Date.parse(new Date(date2))
+      // 两个时间戳相差的毫秒数
+      const diffMilliseconds = time2 - time1
+      // 相差的天数
+      const diffDays = Math.floor(diffMilliseconds / (24 * 3600 * 1000))
+      // 计算出小时数——// 计算天数后剩余的毫秒数
+      const leave1 = diffMilliseconds % (24 * 3600 * 1000)
+      const diffHours = Math.floor(leave1 / (3600 * 1000))
+      // 计算相差分钟数
+      const leave2 = leave1 % (3600 * 1000) // 计算小时数后剩余的毫秒数
+      const diffMinutes = Math.floor(leave2 / (60 * 1000))
+      
+      return {
+         milliseconds: diffMilliseconds,
+         hours: diffHours,
+         minutes: diffMinutes,
+         days: diffDays
+      }
    }
 }
 
