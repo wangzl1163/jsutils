@@ -289,6 +289,26 @@ const NumberTools = {
       const num = parseFloat(string)
    
       return isNaN(num) ? def : num
+   },
+   
+   /**
+    * 添加千位符
+    * @param {Number} num 
+    */
+   thousandBit: function (num) {
+      const res = num.toString().replace(
+         /\d+/,
+         function (n) { // 先提取整数部分
+            return n.replace(
+               /(\d)(?=(\d{3})+$)/g,
+               function ($1) {
+                  return $1 + ','
+               }
+            )
+         }
+      )
+      
+      return res
    }
 }
 
