@@ -333,13 +333,13 @@ const FunctionTools = {
          }
 
          // 以Promise的形式返回函数执行结果
-         return new Promise((res, rej) => {
+         return new Promise((resolve, reject) => {
             timeout = setTimeout(async () => {
                try {
                   const result = await func.apply(this, lastArgs)
-                  return res(result)
+                  return resolve(result)
                } catch (e) {
-                  return rej(e)
+                  return reject(e)
                }
             }, wait)
          })
@@ -392,15 +392,15 @@ const FunctionTools = {
          }
 
          // 以Promise的形式返回函数执行结果
-         return new Promise((res, rej) => {
+         return new Promise((resolve, reject) => {
             const fun = async () => {
                // 如果距离第一次执行的时间间隔已经大于等于需要等待的时间
                if (new Date().getTime() - firstCallTimestamp >= wait) {
                   try {
                      const result = await func.apply(this, lastArgs)
-                     return res(result)
+                     return resolve(result)
                   } catch (e) {
-                     return rej(e)
+                     return reject(e)
                   } finally {
                      cancel()
                   }
@@ -408,9 +408,9 @@ const FunctionTools = {
                   timeout = setTimeout(async () => {
                      try {
                         const result = await func.apply(this, lastArgs)
-                        return res(result)
+                        return resolve(result)
                      } catch (e) {
-                        return rej(e)
+                        return reject(e)
                      } finally {
                         cancel()
                      }
